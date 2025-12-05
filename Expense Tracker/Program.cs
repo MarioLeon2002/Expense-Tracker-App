@@ -2,11 +2,18 @@ using Expense_Tracker.Data;
 using Expense_Tracker.Models;   
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Localization configuration
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 
 var sendGridSettings = new SendGridSettings();
 builder.Configuration.GetSection("SendGrid").Bind(sendGridSettings);
@@ -23,10 +30,16 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();  // recommended for password reset, email confirm, etc.
 
-// Register Syncfusion license
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2UFhhQlJBfVpdVHxLflFyVWFTe156dVZWESFaRnZdRl1nSXdTdEFlWXZWeXJc\r\n");
-
 var app = builder.Build();
+
+// Configure request localization for es-MX
+var supportedCultures = new[] { "es-MX", "en-US" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

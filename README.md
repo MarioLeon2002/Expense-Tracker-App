@@ -1,80 +1,98 @@
-# Expense Tracker App
-This is an Expense Tracker App in Asp.Net Core MVC using SyncFusion Components.
+# Rastreador de Gastos (Expense Tracker App)
+Esta es una aplicación de Rastreador de Gastos desarrollada en ASP.NET Core MVC utilizando componentes de código abierto.
 
-## Introduction
-Developed the Expense Tracker App, a web application developed in ASP.NET Core 6 MVC utilizing SyncFusion Components and SQL Server database. This application aims to assist users in efficiently managing their expenses by providing features for tracking transactions, organizing expenses into categories, and visualizing spending patterns.
+## Introducción
+La aplicación Rastreador de Gastos es una aplicación web desarrollada en ASP.NET Core 6 MVC que utiliza componentes de código abierto y base de datos SQL Server. Esta aplicación ayuda a los usuarios a gestionar eficientemente sus gastos proporcionando funciones para rastrear transacciones, organizar gastos en categorías y visualizar patrones de gasto.
 
-## Technologies
-- **ASP.NET Core 6 MVC**: The application's backend and frontend are developed using ASP.NET Core 6 MVC framework.
-- **SyncFusion Components**: SyncFusion Components are utilized for creating interactive UI elements such as grids, charts, and sidebars.
-- **SQL Server Database**: SQL Server is used as the backend database for storing categories and transactions data.
-- **C# Programming Language**: C# is the primary programming language used for server-side logic.
-- **Entity Framework Core**: Entity Framework Core is employed for database access and management.
+## Tecnologías
+- **ASP.NET Core 6 MVC**: El backend y frontend de la aplicación están desarrollados usando el framework ASP.NET Core 6 MVC.
+- **Chart.js**: Utilizado para crear gráficos interactivos (dona y líneas) para visualización de datos.
+- **DataTables**: Componente para tablas con paginación, ordenación y búsqueda.
+- **Flatpickr**: Selector de fechas con soporte para español (México).
+- **Bootstrap 5**: Framework CSS para estilos responsivos.
+- **Font Awesome**: Iconos para la interfaz de usuario.
+- **SQL Server Database**: SQL Server se utiliza como base de datos backend para almacenar datos de categorías y transacciones.
+- **C# Programming Language**: C# es el lenguaje de programación principal usado para la lógica del servidor.
+- **Entity Framework Core**: Entity Framework Core se utiliza para acceso y gestión de base de datos.
 
-## Features
-1. **CRUD Operations**: Implemented CRUD (Create, Read, Update, Delete) operations for both categories and transactions to allow users to manage their data effectively.
-2. **Grid with Paging & Sorting**: Utilized SyncFusion grid component with paging and sorting functionalities to enhance data presentation and accessibility.
-3. **Dashboard with Chart Elements**: Created a dashboard featuring chart elements to provide users with visual insights into their spending patterns.
-4. **Side Menu within Dockable Sidebar**: Integrated a side menu within a dockable sidebar for easy navigation across different sections of the application.
-5. **Login and Logout Authentication**: Implemented authentication features to ensure secure access to the application, allowing users to log in to their accounts and log out when done.
+## Dependencias CDN
+La aplicación utiliza las siguientes bibliotecas vía CDN:
+- **jQuery** - Manipulación del DOM y AJAX
+- **Bootstrap 5** - Framework CSS
+- **Chart.js** - Gráficos interactivos
+- **DataTables** - Tablas con funcionalidades avanzadas
+- **Flatpickr** - Selector de fechas (con locale español)
+- **Font Awesome 6** - Iconos
 
-## Architecture
-The Expense Tracker App follows a Model-View-Controller (MVC) architecture:
-- **Model**: Represents the data and business logic of the application. It includes entities such as categories and transactions, as well as services for data manipulation.
-- **View**: Displays the user interface of the application to the users. It includes HTML templates rendered by the server and served to the client.
-- **Controller**: Handles user requests, processes input, and interacts with the model and view components to generate appropriate responses.
+## Localización
+La aplicación está completamente localizada en español (México - es-MX):
+- Todos los textos de la interfaz están en español
+- Formato de moneda: Peso Mexicano (MXN) - $1,234
+- Formato de fecha: dd/MM/yyyy
+- Mensajes de validación en español
 
-## Modules
-1. Authentication Module:
-- Responsible for handling user authentication and authorization.
-- Includes features such as user registration, login, logout, and password management.
-- Utilizes ASP.NET Core Identity framework for user management and role-based access control.
+## Cambios Recientes
 
-2. Expense Tracking Module:
-- Core module for managing expense transactions and categories.
-- Allows users to record, view, edit, and delete expense transactions.
-- Supports categorization of expenses into custom categories for better organization.
-- Provides functionalities for filtering, sorting, and searching expenses.
+### Eliminación de Syncfusion
+Se eliminaron todos los componentes de Syncfusion para utilizar únicamente bibliotecas de código abierto:
+- ❌ Syncfusion.EJ2.AspNet.Core (removido del .csproj)
+- ❌ Licencia Syncfusion (removida de Program.cs)
+- ❌ Tag helpers Syncfusion (removidos de _ViewImports.cshtml)
+- ❌ CSS/JS Syncfusion (removidos del layout)
 
-3. Dashboard Module:
-- Provides a customizable dashboard for users to view key metrics and summaries of their expenses.
-- Includes charts, graphs, and summaries to visualize spending patterns and trends.
-- Allows users to configure dashboard widgets and personalize their dashboard layout.
+### Componentes de Reemplazo
+| Componente Syncfusion | Reemplazo Open Source |
+|----------------------|----------------------|
+| ejs-grid | DataTables |
+| ejs-chart (spline) | Chart.js (line) |
+| ejs-accumulationchart (doughnut) | Chart.js (doughnut) |
+| ejs-datepicker | Flatpickr |
+| ejs-dropdownlist | Bootstrap select |
+| ejs-textbox | Bootstrap form-control |
+| ejs-numerictextbox | HTML input type="number" |
+| ejs-button | Bootstrap button |
+| ejs-sidebar | CSS sidebar personalizado |
+| ejs-breadcrumb | Bootstrap breadcrumb |
+| ejs-menu | Bootstrap nav |
 
-4. Category Management Module:
-- Handles the management of expense categories.
-- Supports CRUD operations (Create, Read, Update, Delete) for managing categories.
-- Allows users to create, edit, and delete custom categories for organizing expenses.
+## Características
+1. **Operaciones CRUD**: Implementadas operaciones CRUD (Crear, Leer, Actualizar, Eliminar) tanto para categorías como para transacciones.
+2. **Tablas con Paginación y Ordenación**: Utilizando DataTables para mejorar la presentación y accesibilidad de datos.
+3. **Panel con Gráficos**: Panel que muestra gráficos interactivos para visualizar patrones de gasto.
+4. **Menú Lateral Colapsable**: Integrado un menú lateral con navegación fácil entre secciones.
+5. **Autenticación de Usuario**: Implementadas características de autenticación para acceso seguro.
 
-5. User Profile Module:
-- Manages user profiles and account settings.
-- Allows users to view and update their profile information, such as name, email, and password.
-- Provides options for configuring account preferences and settings.
+## Arquitectura
+La aplicación Rastreador de Gastos sigue una arquitectura Modelo-Vista-Controlador (MVC):
+- **Modelo**: Representa los datos y la lógica de negocio de la aplicación.
+- **Vista**: Muestra la interfaz de usuario de la aplicación.
+- **Controlador**: Maneja las solicitudes del usuario y la interacción entre modelo y vista.
 
+## Módulos
+1. **Módulo de Autenticación**: Manejo de autenticación y autorización de usuarios.
+2. **Módulo de Seguimiento de Gastos**: Módulo principal para gestionar transacciones y categorías.
+3. **Módulo de Panel**: Panel personalizable con métricas y resúmenes de gastos.
+4. **Módulo de Gestión de Categorías**: Gestión de categorías de gastos.
+5. **Módulo de Perfil de Usuario**: Gestión de perfiles y configuraciones de cuenta.
 
-## Flow of the App
-1. **Authentication**: Users are required to log in to access the application.
-2. **Dashboard**: Upon successful login, users are directed to the dashboard, where they can view visualizations of their spending patterns.
-3. **Category Management**: Users can navigate to the category management section to create, update, or delete expense categories as needed.
-4. **Transaction Tracking**: Users can record their transactions, specifying the date, amount, description, and category for each transaction.
-5. **Navigation**: Users can navigate between different sections of the application using the sidebar menu.
-6. **Logout**: Users can log out of their accounts to securely end their session and protect their data.
+## Flujo de la Aplicación
+1. **Autenticación**: Los usuarios deben iniciar sesión para acceder a la aplicación.
+2. **Panel**: Tras iniciar sesión, los usuarios ven el panel con visualizaciones de patrones de gasto.
+3. **Gestión de Categorías**: Los usuarios pueden crear, actualizar o eliminar categorías de gastos.
+4. **Seguimiento de Transacciones**: Los usuarios pueden registrar transacciones con fecha, monto, descripción y categoría.
+5. **Navegación**: Los usuarios pueden navegar entre secciones usando el menú lateral.
+6. **Cerrar Sesión**: Los usuarios pueden cerrar sesión de forma segura.
 
-## Users
-The Expense Tracker App caters to individuals or businesses looking to manage their expenses effectively. Users can be anyone who wants to track their spending habits, categorize expenses, and gain insights into their financial activities.
-
-## Additional Points
-- **Security**: Implement appropriate authentication and authorization mechanisms to ensure data privacy and prevent unauthorized access.
-- **Localization**: Consider adding support for multiple languages to make the application accessible to a broader audience.
-- **Scalability**: Design the application with scalability in mind to accommodate potential growth in data volume and user base.
-- **Performance Optimization**: Optimize database queries, frontend rendering, and server-side processing to enhance application performance and responsiveness.
-- **Error Handling**: Implement robust error handling mechanisms to provide users with meaningful error messages and ensure smooth application operation.
-- **Documentation**: Provide comprehensive documentation, including installation instructions, usage guidelines, and troubleshooting tips, to assist users in utilizing the application effectively.
+## Configuración de Desarrollo
+1. Clonar el repositorio
+2. Configurar la cadena de conexión en `appsettings.json`
+3. Ejecutar migraciones: `dotnet ef database update`
+4. Ejecutar la aplicación: `dotnet run`
 
 ## Video
 https://github.com/sandesh300/Expense-Tracker-App/assets/92014891/89735de4-f801-4d0a-9203-dd4d1f315a56
 
-## Images
+## Imágenes
 ![Screenshot (1069)](https://github.com/sandesh300/Expense-Tracker-App/assets/92014891/5d20d458-9808-419f-bf8c-ccccf9b05dfd)
 ![Screenshot (1070)](https://github.com/sandesh300/Expense-Tracker-App/assets/92014891/3988c7a0-01c7-482f-b7ec-906e7188edbc)
 ![Screenshot (1071)](https://github.com/sandesh300/Expense-Tracker-App/assets/92014891/837aa6a5-eec0-409f-9cc9-3e49150b0847)

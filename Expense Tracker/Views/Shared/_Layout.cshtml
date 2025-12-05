@@ -1,31 +1,33 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expense Tracker</title>
+    <title>Rastreador de Gastos</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-@*     <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/25.1.35/material.css" /> *@
-    <link href="https://cdn.syncfusion.com/ej2/25.1.35/bootstrap5-dark.css" rel="stylesheet" />
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    <!-- Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Expense_Tracker.styles.css" asp-append-version="true" />
-    <script src="https://cdn.syncfusion.com/ej2/25.1.35/dist/ej2.min.js"></script>
-
 </head>
-<body class="e-bigger">
+<body>
     @Html.AntiForgeryToken()
 
-     <partial name="_SideBar" /> 
+    <partial name="_SideBar" /> 
     <div class="dock-target">
 
         <nav class="navbar sticky-top">
             <div class="container-fluid py-2 px-4">
-                @* <i class="fa-solid fa-magnifying-glass"></i> *@
                 <div>
-                    @* <i class="fa-solid fa-bell"></i>
-                    <i class="fa-solid fa-message"></i> *@
                     <img class="profile-pic" src="~/profile.jpg" />
                 </div>
             </div>
@@ -55,21 +57,20 @@
                                                     }
                                                 </div>
                                             </div>
-                                            <ejs-breadcrumb id="breadcrumb">
-                                                <e-breadcrumb-items>
-                                                    <e-breadcrumb-item text="Dashboard" url="/Dashboard/Index"></e-breadcrumb-item>
-                                                    @* Example: If you are on Categories page *@
-                                                    @if (ViewData["PageTitle"]?.ToString() == "Categories")
+                                            <!-- Bootstrap Breadcrumb -->
+                                            <nav aria-label="breadcrumb">
+                                                <ol class="breadcrumb bg-transparent mb-0">
+                                                    <li class="breadcrumb-item"><a href="/Dashboard/Index" class="text-decoration-none">Panel</a></li>
+                                                    @if (ViewData["PageTitle"]?.ToString() == "Categorías")
                                                     {
-                                                        <e-breadcrumb-item text="Categories" url="/Category/Index"></e-breadcrumb-item>
+                                                        <li class="breadcrumb-item active" aria-current="page">Categorías</li>
                                                     }
-                                                    @if (ViewData["PageTitle"]?.ToString() == "Transactions")
+                                                    @if (ViewData["PageTitle"]?.ToString() == "Transacciones")
                                                     {
-                                                        <e-breadcrumb-item text="Transactions" url="/Transaction/Index"></e-breadcrumb-item>
+                                                        <li class="breadcrumb-item active" aria-current="page">Transacciones</li>
                                                     }
-                                                </e-breadcrumb-items>
-                                            </ejs-breadcrumb>
-
+                                                </ol>
+                                            </nav>
                                         </div>
                                     </div>
                                 </div>
@@ -84,10 +85,20 @@
     </div>
 
    
+    <!-- jQuery -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <!-- Site JS -->
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-    <ejs-scripts></ejs-scripts>
 </body>
 </html>

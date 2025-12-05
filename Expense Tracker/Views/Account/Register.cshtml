@@ -1,55 +1,54 @@
 ﻿@model RegisterViewModel
 @{
     Layout = null;
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registrarse";
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Expense Tracker</title>
+    <title>@ViewData["Title"] - Rastreador de Gastos</title>
     <!-- Link to our shared CSS file -->
     <link rel="stylesheet" href="~/css/login-register.css" />
 </head>
 
-<!-- ... (head section is the same as Login) ... -->
 <body>
     <div class="auth-container">
         <!-- Image Panel -->
         <div class="auth-image-panel">
-            <h1>Expense Tracker</h1>
-            <p>Take control of your finances. Clarity and peace of mind start here.</p>
+            <h1>Rastreador de Gastos</h1>
+            <p>Toma el control de tus finanzas. La claridad y tranquilidad empiezan aquí.</p>
         </div>
         <!-- Form Panel -->
         <div class="auth-form-panel">
-            <h2>Create Your Account</h2>
-            <p class="subtitle">Get started with tracking your expenses today.</p>
+            <h2>Crea tu Cuenta</h2>
+            <p class="subtitle">Comienza a rastrear tus gastos hoy.</p>
 
             <form asp-action="Register" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="form-group">
-                    <label asp-for="FirstName"></label>
-                    <input asp-for="FirstName" class="form-control" placeholder="Enter your first name" />
+                    <label asp-for="FirstName">Nombre</label>
+                    <input asp-for="FirstName" class="form-control" placeholder="Ingresa tu nombre" />
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                    <label asp-for="Email">Correo Electrónico</label>
+                    <input asp-for="Email" class="form-control" placeholder="tu@ejemplo.com" />
                 </div>
                 <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" placeholder="Choose a strong password" />
+                    <label asp-for="Password">Contraseña</label>
+                    <input asp-for="Password" class="form-control" placeholder="Elige una contraseña segura" />
                 </div>
                 <div class="form-group">
-                    <label asp-for="ConfirmPassword"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm your password" />
+                    <label asp-for="ConfirmPassword">Confirmar Contraseña</label>
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirma tu contraseña" />
                 </div>
-                <button type="submit" class="btn-submit">Create Account</button>
+                <button type="submit" class="btn-submit">Crear Cuenta</button>
             </form>
             <div class="auth-link">
-                Already have an account? <a asp-controller="Account" asp-action="Login">Log In</a>
+                ¿Ya tienes una cuenta? <a asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
             </div>
         </div>
     </div>

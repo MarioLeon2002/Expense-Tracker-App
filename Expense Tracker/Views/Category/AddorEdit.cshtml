@@ -1,7 +1,7 @@
 ﻿@model Expense_Tracker.Models.Category
 
 @{
-    ViewData["PageTitle"] = Model.CategoryId == 0 ? "Create a new category" : "Edit category";
+    ViewData["PageTitle"] = Model.CategoryId == 0 ? "Crear nueva categoría" : "Editar categoría";
 }
 
 <div class="row">
@@ -11,21 +11,25 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
             <div class="mb-3">
-                <div class='e-btn-group custom-rbt-group'>
-                    <input type="radio" id="radioleft" name="Type" value="Expense" checked="@(Model.Type=="Expense")" />
-                    <label class="e-btn" for="radioleft">Expense</label>
-                    <input type="radio" id="radiomiddle" name="Type" value="Income" checked="@(Model.Type=="Income")" />
-                    <label class="e-btn" for="radiomiddle">Income</label>
+                <div class='btn-group custom-rbt-group w-100' role="group">
+                    <input type="radio" class="btn-check" id="radioleft" name="Type" value="Expense" @(Model.Type=="Expense" ? "checked" : "") />
+                    <label class="btn btn-outline-light" for="radioleft">Gasto</label>
+                    <input type="radio" class="btn-check" id="radiomiddle" name="Type" value="Income" @(Model.Type=="Income" ? "checked" : "") />
+                    <label class="btn btn-outline-light" for="radiomiddle">Ingreso</label>
                 </div>
             </div>
             <div class="mb-3">
-                <ejs-textbox id="title" placeholder="Title" ejs-for="Title" floatLabelType="Always"></ejs-textbox>
+                <label for="title" class="form-label">Título</label>
+                <input type="text" class="form-control bg-dark text-white border-secondary" 
+                       id="title" name="Title" value="@Model.Title" placeholder="Título" />
                 <span asp-validation-for="Title" class="text-danger fs-6"></span>
             </div>
             <div class="mb-3">
-                <ejs-textbox id="icon" placeholder="Icon" ejs-for="Icon" floatLabelType="Always"></ejs-textbox>
+                <label for="icon" class="form-label">Ícono</label>
+                <input type="text" class="form-control bg-dark text-white border-secondary" 
+                       id="icon" name="Icon" value="@Model.Icon" placeholder="Ícono (emoji)" />
             </div>
-            <ejs-button id="submit" type="submit" content="Submit" cssClass="e-success"></ejs-button>
+            <button type="submit" class="btn btn-success">Enviar</button>
         </form>
     </div>
 
@@ -37,10 +41,3 @@
     </div>
 </div>
 </div>
-
-
-@*@section Scripts {
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-}*@

@@ -1,24 +1,49 @@
 ﻿@model IEnumerable<Expense_Tracker.Models.Transaction>
 
 @{
-    ViewData["PageTitle"] = "Transactions";
-    ViewData["PageActionText"] = "+ New Transaction";
+    ViewData["PageTitle"] = "Transacciones";
+    ViewData["PageActionText"] = "+ Nueva Transacción";
     ViewData["PageActionUrl"] = "/Transaction/AddOrEdit";
 }
 
 <div class="row">
     <div class="col-md-7">
-        <ejs-grid id="transactions" dataSource="@Model" gridLines="None"
-                  allowSorting="true" allowPaging="true">
-            <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
-            <e-grid-columns>
-                <e-grid-column headerText="Category" field="CategoryTitleWithIcon"></e-grid-column>
-                <e-grid-column headerText="Date" field="Date" width="110px"
-                               type="date" format="MMM-dd-yy" textAlign="Left"></e-grid-column>
-                <e-grid-column headerText="Amount" field="FormattedAmount" textAlign="Right" width="110px"></e-grid-column>
-                <e-grid-column headerText="Actions" template="#actionColumnTemplate" width="100px"></e-grid-column>
-            </e-grid-columns>
-        </ejs-grid>
+        <div class="widget p-3">
+            <table id="transactionsTable" class="table table-dark table-hover" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Fecha</th>
+                        <th class="text-end">Monto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model)
+                    {
+                        <tr>
+                            <td>@transaction.CategoryTitleWithIcon</td>
+                            <td>@transaction.Date.ToString("dd/MM/yyyy")</td>
+                            <td class="text-end">@transaction.FormattedAmount</td>
+                            <td>
+                                <div class="d-flex flex-row justify-content-start">
+                                    <a class="btn btn-sm no-a-decoration" href="/Transaction/AddOrEdit/@transaction.TransactionId">
+                                        <i class="fa-solid fa-pen fa-lg"></i>
+                                    </a>
+                                    <form action="/Transaction/Delete/@transaction.TransactionId" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-link no-a-decoration"
+                                                onclick="return confirm('¿Está seguro de que desea eliminar este registro?')">
+                                            <i class="fa-solid fa-trash-can fa-lg text-danger"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="col-md-5">
         <div class="widget h-100 d-flex justify-content-center align-items-center">
@@ -27,17 +52,33 @@
     </div>
 </div>
 
-<script id="actionColumnTemplate" type="text/x-template">
-    <div class="d-flex flex-row justify-content-start">
-        <a class="btn btn-sm no-a-decoration" href="/Transaction/AddOrEdit/${TransactionId}">
-            <i class="fa-solid fa-pen fa-lg"></i>
-        </a>
-        <form action="/Transaction/Delete/${TransactionId}" method="post">
-    @Html.AntiForgeryToken()
-            <button type="submit" class="btn btn-sm btn-link no-a-decoration"
-            onclick="return confirm(&quot;Are sure to delete this record?&quot;)">
-                <i class="fa-solid fa-trash-can fa-lg text-danger"></i>
-            </button>
-        </form>
-    </div>
-</script>
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#transactionsTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50],
+                ordering: true,
+                order: [[1, 'desc']],
+                language: {
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    emptyTable: "No hay transacciones disponibles",
+                    zeroRecords: "No se encontraron registros"
+                },
+                columnDefs: [
+                    { orderable: false, targets: 3 }
+                ]
+            });
+        });
+    </script>
+}
