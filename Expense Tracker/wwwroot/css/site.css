@@ -262,6 +262,11 @@ img.profile-pic {
     transform: scale(1.05) translateZ(0px);
 }
 
+/* Sidebar open state */
+#sidebar.sidebar-open {
+    width: 290px;
+}
+
 /* Sidebar closed state */
 #sidebar.sidebar-closed {
     width: 100px;
@@ -288,8 +293,9 @@ img.profile-pic {
     margin: 0 !important;
 }
 
-#sidebar.sidebar-closed + .dock-target .main-content,
-#sidebar.sidebar-closed + .dock-target nav.navbar {
+/* When sidebar is closed, adjust main content via JavaScript class on body */
+body.sidebar-is-closed .main-content,
+body.sidebar-is-closed nav.navbar {
     margin-left: 100px;
 }
 

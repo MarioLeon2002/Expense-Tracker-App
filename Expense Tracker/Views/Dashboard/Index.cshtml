@@ -9,14 +9,27 @@
     var splineData = ViewBag.SplineChartData as IEnumerable<dynamic>;
     var recentTransactions = ViewBag.RecentTransactions as IEnumerable<Expense_Tracker.Models.Transaction>;
     
-    // Prepare doughnut chart data for JSON serialization
-    var doughnutLabels = doughnutData?.Select(d => (string)d.categoryTitleWithIcon).ToList() ?? new List<string>();
-    var doughnutAmounts = doughnutData?.Select(d => (int)d.amount).ToList() ?? new List<int>();
+    // Prepare doughnut chart data for JSON serialization with safe casting
+    var doughnutLabels = new List<string>();
+    var doughnutAmounts = new List<int>();
+    if (doughnutData != null) {
+        foreach (var d in doughnutData) {
+            doughnutLabels.Add(Convert.ToString(d.categoryTitleWithIcon) ?? "");
+            doughnutAmounts.Add(Convert.ToInt32(d.amount));
+        }
+    }
     
-    // Prepare spline chart data for JSON serialization
-    var splineDays = splineData?.Select(d => (string)d.day).ToList() ?? new List<string>();
-    var splineIncome = splineData?.Select(d => (int)d.income).ToList() ?? new List<int>();
-    var splineExpense = splineData?.Select(d => (int)d.expense).ToList() ?? new List<int>();
+    // Prepare spline chart data for JSON serialization with safe casting
+    var splineDays = new List<string>();
+    var splineIncome = new List<int>();
+    var splineExpense = new List<int>();
+    if (splineData != null) {
+        foreach (var d in splineData) {
+            splineDays.Add(Convert.ToString(d.day) ?? "");
+            splineIncome.Add(Convert.ToInt32(d.income));
+            splineExpense.Add(Convert.ToInt32(d.expense));
+        }
+    }
 }
 
 @*Summary Widgets*@

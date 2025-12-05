@@ -91,6 +91,7 @@
         toggler.onclick = function () {
             sidebar.classList.toggle('sidebar-open');
             sidebar.classList.toggle('sidebar-closed');
+            document.body.classList.toggle('sidebar-is-closed');
             
             if (sidebar.classList.contains('sidebar-closed')) {
                 toggler.classList.remove('fa-angles-left');

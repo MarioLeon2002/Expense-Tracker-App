@@ -71,7 +71,7 @@
         flatpickr(".flatpickr-date", {
             dateFormat: "d/m/Y",
             locale: "es",
-            defaultDate: "@Model.Date.ToString("dd/MM/yyyy")"
+            defaultDate: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Date.ToString("dd/MM/yyyy")))
         });
 
         // Keyword to category mapping for auto-suggestion
