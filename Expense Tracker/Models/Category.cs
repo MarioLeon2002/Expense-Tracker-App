@@ -15,7 +15,7 @@ namespace Expense_Tracker.Models
         // ----------------------------------
 
         [Column(TypeName = "nvarchar(50)")]
-        [Required(ErrorMessage = "Title is required.")]
+        [Required(ErrorMessage = "El título es requerido.")]
         public string Title { get; set; }
 
         [Column(TypeName = "nvarchar(5)")]

@@ -1,8 +1,9 @@
 ﻿@model Expense_Tracker.Models.Transaction
 
 @{
-    ViewData["PageTitle"] = Model.TransactionId == 0 ? "Create a new transaction" : "Edit transaction";
+    ViewData["PageTitle"] = Model.TransactionId == 0 ? "Crear nueva transacción" : "Editar transacción";
     var username = Context.Request.Query["username"].ToString() ?? "Guest";
+    var categories = ViewBag.Categories as List<Expense_Tracker.Models.Category>;
 }
 
 <div class="row">
@@ -10,195 +11,203 @@
         <div class="widget p-5" style="background-color:#212b36">
             <form asp-action="AddOrEdit" method="post">
                 <input type="hidden" name="TransactionId" value="@Model.TransactionId" />
-                <input type="hidden" name="username" value="@username" />  <!-- preserve username -->
+                <input type="hidden" name="username" value="@username" />
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="mb-3">
-                    <ejs-datepicker id="date" ejs-for="Date"
-                                    placeholder="Date" floatLabelType="Always"
-                                    format="MMM-dd-yy"></ejs-datepicker>
+                    <label for="date" class="form-label">Fecha</label>
+                    <input type="text" class="form-control bg-dark text-white border-secondary flatpickr-date" 
+                           id="date" name="Date" value="@Model.Date.ToString("dd/MM/yyyy")" 
+                           placeholder="Seleccionar fecha" />
                 </div>
                 <div class="mb-3">
-                    <ejs-dropdownlist id="CategoryId" ejs-for="CategoryId"
-                                      dataSource="@ViewBag.Categories" placeholder="Category"
-                                      floatLabelType="Always" allowFiltering="true" ignoreAccent="true"
-                                      filterType="Contains" popupHeight="220px">
-                        <e-dropdownlist-fields value="CategoryId" text="TitleWithIcon"></e-dropdownlist-fields>
-                    </ejs-dropdownlist>
+                    <label for="CategoryId" class="form-label">Categoría</label>
+                    <select class="form-select bg-dark text-white border-secondary" 
+                            id="CategoryId" name="CategoryId">
+                        @if (categories != null)
+                        {
+                            @foreach (var category in categories)
+                            {
+                                if (category.CategoryId == Model.CategoryId)
+                                {
+                                    <option value="@category.CategoryId" selected>@category.TitleWithIcon</option>
+                                }
+                                else
+                                {
+                                    <option value="@category.CategoryId">@category.TitleWithIcon</option>
+                                }
+                            }
+                        }
+                    </select>
                     <span asp-validation-for="CategoryId" class="text-danger fs-6"></span>
                 </div>
 
                 <div class="mb-3">
-                    <ejs-numerictextbox id="amount" ejs-for="Amount"
-                                        placeholder="Amount" floatLabelType="Always"
-                                        min=0 format="c0"></ejs-numerictextbox>
+                    <label for="amount" class="form-label">Monto</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-dark text-white border-secondary">$</span>
+                        <input type="number" class="form-control bg-dark text-white border-secondary" 
+                               id="amount" name="Amount" value="@Model.Amount" 
+                               min="0" placeholder="0" />
+                    </div>
                     <span asp-validation-for="Amount" class="text-danger fs-6"></span>
                 </div>
                 <div class="mb-3">
-                    <ejs-textbox id="NoteInput" placeholder="Note" ejs-for="Note"
-                                 floatLabelType="Always" multiline="true"
-                                 input="onNoteChange" required></ejs-textbox> @* <-- Added id="NoteInput" and input="onNoteChange" *@
+                    <label for="NoteInput" class="form-label">Nota</label>
+                    <textarea class="form-control bg-dark text-white border-secondary" 
+                              id="NoteInput" name="Note" rows="3" 
+                              placeholder="Nota">@Model.Note</textarea>
                 </div>
-                <ejs-button id="submit" type="submit" content="Submit" cssClass="e-success"></ejs-button>
+                <button type="submit" class="btn btn-success">Enviar</button>
             </form>
         </div>
     </div>
 </div>
 
-@* This should be at the very end of your AddOrEdit.cshtml file *@
 @section Scripts {
     <script>
+        // Initialize Flatpickr with Spanish locale
+        flatpickr(".flatpickr-date", {
+            dateFormat: "d/m/Y",
+            locale: "es",
+            defaultDate: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Date.ToString("dd/MM/yyyy")))
+        });
+
+        // Keyword to category mapping for auto-suggestion
         const keywordMap = {
             // 🍔 Food & Dining
-            'food': 'Food',
+            'comida': 'Food',
             'pizza': 'Food',
-            'burger': 'Food',
+            'hamburguesa': 'Food',
             'sandwich': 'Food',
-            'groceries': 'Food',
-            'supermarket': 'Food',
+            'despensa': 'Food',
+            'supermercado': 'Food',
             'snacks': 'Food',
-            'restaurant': 'Food',
-            'lunch': 'Food',
-            'dinner': 'Food',
-            'breakfast': 'Food',
-            'coffee': 'Food',
-            'tea': 'Food',
+            'restaurante': 'Food',
+            'almuerzo': 'Food',
+            'cena': 'Food',
+            'desayuno': 'Food',
+            'café': 'Food',
+            'food': 'Food',
 
             // 🚍 Travel & Transport
-            'bus': 'Travel',
-            'train': 'Travel',
-            'flight': 'Travel',
-            'plane': 'Travel',
+            'camión': 'Travel',
+            'metro': 'Travel',
+            'vuelo': 'Travel',
+            'avión': 'Travel',
             'uber': 'Travel',
-            'ola': 'Travel',
+            'didi': 'Travel',
             'taxi': 'Travel',
-            'cab': 'Travel',
-            'petrol': 'Travel',
-            'diesel': 'Travel',
-            'gas': 'Travel',
-            'fuel': 'Travel',
-            'ticket': 'Travel',
+            'gasolina': 'Travel',
+            'combustible': 'Travel',
+            'boleto': 'Travel',
+            'travel': 'Travel',
+            'transporte': 'Travel',
 
             // 🏠 Housing & Utilities
-            'rent': 'Housing',
-            'house': 'Housing',
-            'flat': 'Housing',
-            'apartment': 'Housing',
-            'maintenance': 'Housing',
-            'electricity': 'Housing',
-            'power': 'Housing',
-            'water': 'Housing',
-            'gas bill': 'Housing',
+            'renta': 'Housing',
+            'casa': 'Housing',
+            'departamento': 'Housing',
+            'mantenimiento': 'Housing',
+            'electricidad': 'Housing',
+            'luz': 'Housing',
+            'agua': 'Housing',
+            'gas': 'Housing',
             'wifi': 'Housing',
             'internet': 'Housing',
-            'mobile bill': 'Housing',
-            'phone bill': 'Housing',
+            'teléfono': 'Housing',
+            'housing': 'Housing',
 
             // 🛍 Shopping
-            'shopping': 'Shopping',
+            'compras': 'Shopping',
             'mall': 'Shopping',
-            'clothes': 'Shopping',
-            'dress': 'Shopping',
-            'shoes': 'Shopping',
+            'ropa': 'Shopping',
+            'vestido': 'Shopping',
+            'zapatos': 'Shopping',
             'amazon': 'Shopping',
-            'flipkart': 'Shopping',
-            'myntra': 'Shopping',
-            'zara': 'Shopping',
+            'mercadolibre': 'Shopping',
+            'shopping': 'Shopping',
 
             // 💊 Health & Medical
             'hospital': 'Health',
             'doctor': 'Health',
-            'medicine': 'Health',
-            'pharmacy': 'Health',
-            'chemist': 'Health',
-            'checkup': 'Health',
-            'test': 'Health',
-            'surgery': 'Health',
+            'medicina': 'Health',
+            'farmacia': 'Health',
+            'consulta': 'Health',
+            'salud': 'Health',
+            'seguro': 'Health',
             'health': 'Health',
-            'insurance': 'Health',
 
             // 🎬 Entertainment
-            'movie': 'Entertainment',
+            'película': 'Entertainment',
             'netflix': 'Entertainment',
             'prime': 'Entertainment',
-            'hotstar': 'Entertainment',
             'spotify': 'Entertainment',
-            'music': 'Entertainment',
-            'game': 'Entertainment',
-            'cinema': 'Entertainment',
-            'theatre': 'Entertainment',
+            'música': 'Entertainment',
+            'juego': 'Entertainment',
+            'cine': 'Entertainment',
+            'entretenimiento': 'Entertainment',
+            'entertainment': 'Entertainment',
 
             // 💼 Income
-            'salary': 'Income',
-            'bonus': 'Income',
-            'pay': 'Income',
-            'payment': 'Income',
-            'deposit': 'Income',
-            'income': 'Income',
-            'cashback': 'Income',
-            'refund': 'Income',
+            'salario': 'Income',
+            'bono': 'Income',
+            'pago': 'Income',
+            'depósito': 'Income',
+            'ingreso': 'Income',
+            'reembolso': 'Income',
             'freelance': 'Income',
-            'project': 'Income',
+            'proyecto': 'Income',
+            'income': 'Income',
 
             // 🎓 Education
-            'school': 'Education',
-            'college': 'Education',
-            'university': 'Education',
-            'course': 'Education',
-            'class': 'Education',
-            'exam': 'Education',
-            'books': 'Education',
-            'stationery': 'Education',
-            'fees': 'Education',
-            'coaching': 'Education',
+            'escuela': 'Education',
+            'universidad': 'Education',
+            'curso': 'Education',
+            'clase': 'Education',
+            'examen': 'Education',
+            'libros': 'Education',
+            'colegiatura': 'Education',
+            'education': 'Education',
 
             // 🎁 Miscellaneous
-            'gift': 'Other',
-            'donation': 'Other',
-            'charity': 'Other',
-            'wedding': 'Other',
-            'party': 'Other',
-            'festival': 'Other',
-            'puja': 'Other'
+            'regalo': 'Other',
+            'donación': 'Other',
+            'boda': 'Other',
+            'fiesta': 'Other',
+            'other': 'Other'
         };
 
 
-        function onNoteChange(args) {
-            const noteText = args.value ? args.value.toLowerCase() : '';
+        document.getElementById('NoteInput').addEventListener('input', function(e) {
+            const noteText = e.target.value.toLowerCase();
             let suggestedCategory = null;
 
-            // 1. Find the *last* matching keyword in the note
+            // Find the last matching keyword in the note
             for (const keyword in keywordMap) {
                 if (noteText.includes(keyword)) {
                     suggestedCategory = keywordMap[keyword];
                 }
             }
 
-            const categoryDropdown = document.getElementById('CategoryId').ej2_instances[0];
+            const categoryDropdown = document.getElementById('CategoryId');
 
             if (suggestedCategory) {
-                // 2. Look for matching category in dropdown
-                const categories = categoryDropdown.dataSource;
-                const matchedCategory = categories.find(cat =>
-                    cat.TitleWithIcon.toLowerCase().includes(suggestedCategory.toLowerCase())
-                );
-
-                if (matchedCategory) {
-                    categoryDropdown.value = matchedCategory.CategoryId;
-                    categoryDropdown.dataBind();
-
-                    // 🔥 3. Highlight dropdown (flash effect)
-                    const el = document.getElementById('CategoryId');
-                    el.classList.add('flash-highlight');
-                    setTimeout(() => el.classList.remove('flash-highlight'), 800);
+                // Look for matching category in dropdown
+                const options = categoryDropdown.options;
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].text.toLowerCase().includes(suggestedCategory.toLowerCase())) {
+                        categoryDropdown.value = options[i].value;
+                        
+                        // Flash effect
+                        categoryDropdown.classList.add('flash-highlight');
+                        setTimeout(() => categoryDropdown.classList.remove('flash-highlight'), 800);
+                        break;
+                    }
                 }
-            } else {
-                // 4. Reset to default (no selection)
-                categoryDropdown.value = null;
-                categoryDropdown.dataBind();
             }
-        }
+        });
     </script>
 
     <style>
